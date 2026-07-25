@@ -62,7 +62,7 @@ export function LegalDocumentLayout({ document }: LegalDocumentLayoutProps) {
           <div className="flex items-center gap-4 text-xs font-medium text-slate-500 pt-2">
             <span>Last Updated: <strong className="text-slate-700">{document.lastUpdated}</strong></span>
             <span>•</span>
-            <span>Platform: <strong className="text-slate-700">Mufin RuPay Network</strong></span>
+            <span>Platform: <strong className="text-slate-700">Cards Ocean RuPay Network</strong></span>
           </div>
         </div>
       </div>

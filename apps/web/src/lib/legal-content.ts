@@ -13,15 +13,15 @@ export interface LegalDocument {
 
 export const TERMS_AND_CONDITIONS: LegalDocument = {
   title: "Terms & Conditions",
-  subtitle: "Terms governing your access to and use of Mufin RuPay Prepaid & Gift Cards",
+  subtitle: "Terms governing your access to and use of Cards Ocean RuPay Prepaid & Gift Cards",
   lastUpdated: "July 25, 2026",
   sections: [
     {
       id: "introduction",
       title: "1. Acceptance of Terms & Introduction",
       content: [
-        "Welcome to Mufin ('we', 'us', 'our', or the 'Platform'). By accessing, browsing, registering for, or using our website and services (collectively, the 'Services'), you ('User', 'you', or 'Cardholder') acknowledge that you have read, understood, and agreed to be legally bound by these Terms and Conditions ('Terms').",
-        "Mufin is a premium fintech marketplace providing custom-value prepaid digital and physical gift cards operating on the RuPay payment network in compliance with applicable guidelines issued by the Reserve Bank of India (RBI) and National Payments Corporation of India (NPCI).",
+        "Welcome to Cards Ocean ('we', 'us', 'our', or the 'Platform'). By accessing, browsing, registering for, or using our website and services (collectively, the 'Services'), you ('User', 'you', or 'Cardholder') acknowledge that you have read, understood, and agreed to be legally bound by these Terms and Conditions ('Terms').",
+        "Cards Ocean is a premium fintech marketplace providing custom-value prepaid digital and physical gift cards operating on the RuPay payment network in compliance with applicable guidelines issued by the Reserve Bank of India (RBI) and National Payments Corporation of India (NPCI).",
         "If you do not agree with any part of these Terms, you must immediately discontinue your access to and use of the Platform and Services."
       ]
     },
@@ -29,8 +29,8 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       id: "eligibility",
       title: "2. User Eligibility & Identity Verification",
       content: [
-        "To purchase or redeem gift cards on Mufin, you must be an individual at least 18 years of age and legally competent to enter into a binding contract under the Indian Contract Act, 1872.",
-        "Mufin operates a streamlined, high-trust verification flow. Depending on the transaction value and regulatory thresholds, purchases may be subject to dual-factor authentication using SMS One-Time Password (OTP), Email OTP, and real-time Permanent Account Number (PAN) validation.",
+        "To purchase or redeem gift cards on Cards Ocean, you must be an individual at least 18 years of age and legally competent to enter into a binding contract under the Indian Contract Act, 1872.",
+        "Cards Ocean operates a streamlined, high-trust verification flow. Depending on the transaction value and regulatory thresholds, purchases may be subject to dual-factor authentication using SMS One-Time Password (OTP), Email OTP, and real-time Permanent Account Number (PAN) validation.",
         "You represent and warrant that all information provided during checkout—including recipient name, mobile number, email address, and PAN card details—is accurate, current, and complete. Submitting false, spoofed, or fraudulent identity information is strictly prohibited."
       ]
     },
@@ -38,17 +38,17 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       id: "gift-card-issuance",
       title: "3. RuPay Gift Card Issuance & Denominations",
       content: [
-        "Mufin enables users to purchase pre-loaded virtual and physical RuPay gift cards within customizable denomination bounds ranging from ₹1,000 up to ₹10,000 per card (or as permitted by regulatory limits).",
+        "Cards Ocean enables users to purchase pre-loaded virtual and physical RuPay gift cards within customizable denomination bounds ranging from ₹1,000 up to ₹10,000 per card (or as permitted by regulatory limits).",
         "Virtual cards (e.g., Aurora, Lumen, Verve) are delivered digitally to the designated recipient's email address and/or mobile number upon successful transaction authorization.",
         "Physical cards (e.g., Ember, Noir, Velvet) are dispatched to the validated domestic shipping address provided during checkout.",
-        "Cards issued via Mufin are pre-funded non-reloadable prepaid instruments (PPI) powered by RuPay. They can be used for merchant payments across participating physical point-of-sale (POS) terminals and online e-commerce gateways within India supporting RuPay prepaid card acceptance."
+        "Cards issued via Cards Ocean are pre-funded non-reloadable prepaid instruments (PPI) powered by RuPay. They can be used for merchant payments across participating physical point-of-sale (POS) terminals and online e-commerce gateways within India supporting RuPay prepaid card acceptance."
       ]
     },
     {
       id: "pricing-fees",
       title: "4. Pricing, Convenience & Processing Fees",
       content: [
-        "The total order cost on Mufin comprises the card face value, applicable convenience rate, and processing fees.",
+        "The total order cost on Cards Ocean comprises the card face value, applicable convenience rate, and processing fees.",
         "Virtual Delivery Convenience Rate: A 2.5% convenience rate is applied to virtual card purchases to cover end-to-end cryptographic encryption, instant provisioning infrastructure, and digital delivery.",
         "Physical Delivery Convenience Rate: A 3.0% convenience rate is applied to physical card orders to cover tactile packaging, card printing, secure vault dispatch, and premium logistics.",
         "Standard Processing Rate: An 8.0% platform processing fee applies across all orders to support real-time ledger settlement, card network provisioning, and gateway integration costs.",
@@ -61,14 +61,14 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       content: [
         "Sensitve credentials associated with your digital card (such as full 16-digit card numbers, expiration dates, and Card Verification Values/CVVs) are stored using bank-grade AES-256 cryptographic encryption.",
         "Decryption and viewing of card credentials ('Secret Reveal') through your user dashboard requires explicit, rate-limited user action. Each reveal event is audit-logged and monitored for suspicious activity.",
-        "You are solely responsible for maintaining the confidentiality of your card credentials, account credentials, and OTP verification codes. Mufin will never ask for your CVV or account password via telephone or unprompted messages. Never share your card details with unauthorized third parties."
+        "You are solely responsible for maintaining the confidentiality of your card credentials, account credentials, and OTP verification codes. Cards Ocean will never ask for your CVV or account password via telephone or unprompted messages. Never share your card details with unauthorized third parties."
       ]
     },
     {
       id: "validity-expiry",
       title: "6. Validity, Expiration & Usage Rules",
       content: [
-        "Each RuPay gift card issued through Mufin carries a defined validity period, clearly stated on the card surface or digital card dashboard (typically up to 12 months from the date of issuance).",
+        "Each RuPay gift card issued through Cards Ocean carries a defined validity period, clearly stated on the card surface or digital card dashboard (typically up to 12 months from the date of issuance).",
         "Cards automatically expire on the designated expiration date. Upon expiry, any unused residual balance on non-reloadable gift cards shall be handled strictly in accordance with RBI guidelines for prepaid payment instruments.",
         "Cards cannot be redeemed for cash, transferred for cash equivalent, used at automated teller machines (ATMs) for cash withdrawal, or used for illegal transactions, illegal gambling, or money laundering."
       ]
@@ -77,15 +77,15 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       id: "prohibited-conduct",
       title: "7. Prohibited Conduct & Account Safeguards",
       content: [
-        "Users agree not to: (a) use automated bots, scrapers, or reverse-engineering tools to access the Platform; (b) attempt to bypass DevTools guards, rate limits, or encryption mechanisms; (c) use stolen payment instruments or fraudulent PAN details; (d) resell gift cards commercially without explicit written authorization from Mufin.",
-        "Mufin reserves the right to immediately suspend or terminate any account, decline card issuance, or freeze access to suspicious cards if fraud, money laundering, or breach of these Terms is detected."
+        "Users agree not to: (a) use automated bots, scrapers, or reverse-engineering tools to access the Platform; (b) attempt to bypass DevTools guards, rate limits, or encryption mechanisms; (c) use stolen payment instruments or fraudulent PAN details; (d) resell gift cards commercially without explicit written authorization from Cards Ocean.",
+        "Cards Ocean reserves the right to immediately suspend or terminate any account, decline card issuance, or freeze access to suspicious cards if fraud, money laundering, or breach of these Terms is detected."
       ]
     },
     {
       id: "intellectual-property",
       title: "8. Intellectual Property Rights",
       content: [
-        "All content, logos, trademarks, card designs, UI layouts, source code, and visual styling on Mufin are the exclusive property of Mufin or its licensors and are protected under Indian and international intellectual property laws.",
+        "All content, logos, trademarks, card designs, UI layouts, source code, and visual styling on Cards Ocean are the exclusive property of Cards Ocean or its licensors and are protected under Indian and international intellectual property laws.",
         "RuPay is a registered trademark of National Payments Corporation of India (NPCI). All other brand names and logos belong to their respective owners."
       ]
     },
@@ -94,8 +94,8 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       title: "9. Limitation of Liability & Disclaimers",
       content: [
         "The Services are provided on an 'AS IS' and 'AS AVAILABLE' basis without warranties of any kind, whether express or implied.",
-        "To the maximum extent permitted by law, Mufin shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, arising out of or related to your use of the Services, third-party gateway outages, or merchant terminal rejections.",
-        "Mufin's total cumulative liability for any claim arising out of these Terms shall not exceed the total processing fees paid by you to Mufin for the transaction giving rise to the claim."
+        "To the maximum extent permitted by law, Cards Ocean shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, arising out of or related to your use of the Services, third-party gateway outages, or merchant terminal rejections.",
+        "Cards Ocean's total cumulative liability for any claim arising out of these Terms shall not exceed the total processing fees paid by you to Cards Ocean for the transaction giving rise to the claim."
       ]
     },
     {
@@ -110,7 +110,7 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
       id: "contact-info",
       title: "11. Contact & Notice",
       content: [
-        "For any questions, legal notices, or support inquiries concerning these Terms, please contact our Legal & Compliance Desk at legal@mufin.co or support@mufin.co."
+        "For any questions, legal notices, or support inquiries concerning these Terms, please contact our Legal & Compliance Desk at legal@cardsocean.com or support@cardsocean.com."
       ]
     }
   ]
@@ -118,15 +118,15 @@ export const TERMS_AND_CONDITIONS: LegalDocument = {
 
 export const PRIVACY_POLICY: LegalDocument = {
   title: "Privacy Policy",
-  subtitle: "How Mufin collects, uses, protects, and discloses your personal data",
+  subtitle: "How Cards Ocean collects, uses, protects, and discloses your personal data",
   lastUpdated: "July 25, 2026",
   sections: [
     {
       id: "privacy-overview",
       title: "1. Overview & Data Philosophy",
       content: [
-        "At Mufin, protecting your privacy and securing your personal financial data is fundamental to our platform philosophy. This Privacy Policy describes how Mufin collects, stores, uses, processes, and protects your information when you visit our website, mobile application, or purchase our RuPay gift cards.",
-        "By using Mufin, you consent to the data collection and processing practices described in this Privacy Policy. We adhere strictly to the Digital Personal Data Protection (DPDP) Act of India and relevant RBI cybersecurity frameworks."
+        "At Cards Ocean, protecting your privacy and securing your personal financial data is fundamental to our platform philosophy. This Privacy Policy describes how Cards Ocean collects, stores, uses, processes, and protects your information when you visit our website, mobile application, or purchase our RuPay gift cards.",
+        "By using Cards Ocean, you consent to the data collection and processing practices described in this Privacy Policy. We adhere strictly to the Digital Personal Data Protection (DPDP) Act of India and relevant RBI cybersecurity frameworks."
       ]
     },
     {
@@ -180,7 +180,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       id: "cookies-tracking",
       title: "7. Cookies & Session Management",
       content: [
-        "Mufin utilizes essential session cookies and local storage tokens to maintain authenticated states, secure checkout wizard progress, and prevent CSRF attacks.",
+        "Cards Ocean utilizes essential session cookies and local storage tokens to maintain authenticated states, secure checkout wizard progress, and prevent CSRF attacks.",
         "We do not use invasive third-party tracking pixels or behavioral profiling cookies."
       ]
     },
@@ -189,7 +189,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       title: "8. Your Rights & Grievance Redressal",
       content: [
         "You have the right to request access to your personal data, request corrections to inaccurate information, or request account closure, subject to statutory record-retention requirements.",
-        "In accordance with Indian Information Technology rules, if you have any questions, concerns, or grievances regarding data privacy, you may reach our Grievance Officer at privacy@mufin.co or write to: Grievance Officer, Mufin Fintech Services, Mumbai, Maharashtra, India."
+        "In accordance with Indian Information Technology rules, if you have any questions, concerns, or grievances regarding data privacy, you may reach our Grievance Officer at privacy@cardsocean.com or write to: Grievance Officer, Cards Ocean Fintech Services, Mumbai, Maharashtra, India."
       ]
     },
     {
@@ -197,7 +197,7 @@ export const PRIVACY_POLICY: LegalDocument = {
       title: "9. Updates to This Privacy Policy",
       content: [
         "We may update this Privacy Policy periodically to reflect operational, legal, or regulatory changes. The 'Last Updated' date at the top of this policy indicates when changes were last published.",
-        "Continued use of Mufin after changes become effective constitutes your acknowledgment and acceptance of the revised policy."
+        "Continued use of Cards Ocean after changes become effective constitutes your acknowledgment and acceptance of the revised policy."
       ]
     }
   ]
