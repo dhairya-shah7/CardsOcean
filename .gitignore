@@ -16,3 +16,8 @@ apps/api/.generated
 *.log
 
 .vercel
+scratch/
+brain.html
+brain2.html
+index.html
+copy.md
