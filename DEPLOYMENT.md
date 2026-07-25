@@ -35,7 +35,7 @@
 
 - Primary database: PostgreSQL on Render
 - Prisma schema: `apps/api/prisma/schema.prisma`
-- Run migrations on deploy with `prisma migrate deploy`
+- Run migrations on deploy with `npm run prisma:deploy` (or `npx prisma db push`)
 - CSV snapshots are exported from `GET /api/admin/export-csv`
 
 ## Environment

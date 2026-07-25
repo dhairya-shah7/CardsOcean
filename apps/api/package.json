@@ -11,7 +11,7 @@
     "test": "tsx --test --test-concurrency=1 --test-force-exit test/*.test.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:deploy": "prisma migrate deploy",
+    "prisma:deploy": "prisma db push --accept-data-loss",
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
