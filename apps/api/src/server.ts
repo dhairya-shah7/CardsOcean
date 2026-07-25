@@ -19,7 +19,7 @@ process.on("uncaughtException", (error) => {
 });
 
 // Graceful shutdown on SIGTERM / SIGINT
-const server = app.listen(config.PORT, "127.0.0.1", () => {
+const server = app.listen(config.PORT, "0.0.0.0", () => {
   logger.info(`Cards Ocean API listening on port ${config.PORT}`);
 });
 
