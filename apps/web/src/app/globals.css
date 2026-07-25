@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@font-face {
+  font-family: 'Quincy';
+  src: local('Quincy'),
+       local('Quincy CF'),
+       local('QuincyCF'),
+       local('Quincy Regular'),
+       local('Quincy-Regular'),
+       local('Quincy CF Regular'),
+       url('/fonts/QuincyCF-Regular.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/playfairdisplay/v37/nuFvD-vYSZ27mxTvnYxXo8U6-GPqBcFIu10r.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #111827;
+  --page-start: rgba(124, 58, 237, 0.06);
+  --page-mid: rgba(245, 158, 11, 0.06);
+  --page-end: #ffffff;
+}
+
+html.dark {
+  color-scheme: dark;
+  --background: #ffffff;
+  --foreground: #ffffff;
+  --page-start: rgba(124, 58, 237, 0.06);
+  --page-mid: rgba(245, 158, 11, 0.06);
+  --page-end: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.28);
+  color: #111827;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .logo-font {
+    font-family: 'Quincy', 'Quincy CF', 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: none !important;
+  }
+
+  .glass-card {
+    @apply border border-slate-200 bg-white shadow-soft;
+  }
+
+  .primary-btn {
+    @apply inline-flex items-center justify-center rounded-2xl bg-royal-500 px-4 py-3 font-semibold text-white transition hover:bg-royal-600 disabled:opacity-60;
+  }
+
+  .secondary-btn {
+    @apply inline-flex items-center justify-center rounded-2xl border border-luxury-gold bg-transparent px-4 py-3 font-semibold text-luxury-gold transition hover:bg-luxury-gold/10 disabled:opacity-60;
+  }
+}

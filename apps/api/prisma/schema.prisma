@@ -1,0 +1,361 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String              @id @default(uuid())
+  name                  String
+  email                 String              @unique
+  phone                 String?             @unique
+  password              String
+  role                  Role                @default(USER)
+  panNumber             String?
+  panVerifiedAt         DateTime?
+  panVerificationAttempts Int               @default(0)
+  panVerificationWindowStartedAt DateTime?
+  panVerificationLockedUntil     DateTime?
+  deliveryPreference    String?
+  deliveryAddressLine1   String?
+  deliveryAddressLine2   String?
+  deliveryCity          String?
+  deliveryState         String?
+  deliveryPostalCode    String?
+  deliveryCountry       String?             @default("India")
+  accountFlagged        Boolean             @default(false)
+  accountSuspended      Boolean             @default(false)
+  verified              Boolean             @default(false)
+  emailVerifiedAt       DateTime?
+  phoneVerifiedAt       DateTime?
+  dob                   String?
+  gender                String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  addresses             Address[]
+  cartItems             CartItem[]
+  cards                 Card[]
+  deviceLogs            DeviceLog[]
+  notifications         Notification[]
+  orders                Order[]
+  otpCodes              OtpCode[]
+  revealLogs            RevealLog[]
+  reviews               Review[]
+  wishlistItems         WishlistItem[]
+  sellerProducts        Product[]           @relation("SellerProducts")
+  sellerProfile         SellerProfile?
+  adminActivities       AdminActivityLog[]  @relation("AdminActor")
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  userId      String
+  label       String
+  line1       String
+  line2       String?
+  city        String
+  state       String
+  postalCode  String
+  country     String   @default("India")
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders      Order[]
+}
+
+model SellerProfile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  displayName      String
+  payoutMethod     String?
+  verificationNote String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id              String         @id @default(uuid())
+  slug            String         @unique
+  title           String
+  subtitle        String?
+  description     String
+  type            CardType
+  minAmount       Int            @default(1000)
+  maxAmount       Int            @default(10000)
+  image           String?
+  gallery         String[]
+  verified        Boolean        @default(false)
+  featured        Boolean        @default(false)
+  trendingScore   Int            @default(0)
+  sellerId        String?
+  status          ProductStatus  @default(APPROVED)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  cards           Card[]
+  cartItems       CartItem[]
+  orderItems      OrderItem[]
+  reviews         Review[]
+  wishlistItems   WishlistItem[]
+  seller          User?          @relation("SellerProducts", fields: [sellerId], references: [id])
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  rating     Int
+  title      String
+  message    String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model WishlistItem {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model Card {
+  id                   String      @id @default(uuid())
+  userId               String
+  productId            String
+  orderId              String
+  balanceEncrypted     String
+  cardNumberEncrypted  String
+  cvvEncrypted         String
+  cardType             CardType
+  status               CardStatus  @default(ACTIVE)
+  expiryDate           DateTime
+  revealCount          Int         @default(0)
+  lastRevealedAt       DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  user                 User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product              Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  order                Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  transactions         Transaction[]
+  revealLogs           RevealLog[]
+}
+
+model Order {
+  id                 String           @id @default(uuid())
+  userId             String
+  addressId          String?
+  giftCardFaceValue  Int              @default(0)
+  deductionRate      Float            @default(0)
+  deductionAmount    Int              @default(0)
+  finalCreditedAmount Int              @default(0)
+  totalAmount        Int
+  subtotalAmount     Int
+  taxAmount          Int              @default(0)
+  discountAmount     Int              @default(0)
+  paymentStatus      PaymentStatus    @default(PENDING)
+  deliveryStatus     DeliveryStatus   @default(PENDING)
+  paymentProvider    PaymentProvider  @default(PLACEHOLDER)
+  paymentReference   String?
+  couponCode         String?
+  deliveryMethod     DeliveryMethod   @default(VIRTUAL)
+  emailVerified      Boolean          @default(false)
+  smsVerified        Boolean          @default(false)
+  captchaVerified    Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  address            Address?         @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards              Card[]
+  items              OrderItem[]
+  webhookEvents      WebhookEvent[]
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  productId  String
+  quantity   Int
+  amount     Int
+  title      String
+  cardType   CardType
+  createdAt  DateTime @default(now())
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model CartItem {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  quantity   Int
+  amount     Int
+  cardType   CardType
+  savedForLater Boolean @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id         String          @id @default(uuid())
+  cardId     String
+  amount     Int
+  type       TransactionType
+  createdAt  DateTime        @default(now())
+  card       Card            @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  userId     String
+  title      String
+  message    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DeviceLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  ipAddress  String
+  userAgent  String
+  action     String
+  createdAt  DateTime @default(now())
+  flagged    Boolean  @default(false)
+  metadata   String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model RevealLog {
+  id         String   @id @default(uuid())
+  userId     String
+  cardId     String
+  ipAddress  String
+  revealedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card       Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model OtpCode {
+  id          String   @id @default(uuid())
+  userId      String?
+  email       String?
+  phone       String?
+  purpose     OtpPurpose
+  code        String
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Coupon {
+  id            String   @id @default(uuid())
+  code          String   @unique
+  type          CouponType
+  value         Int
+  active        Boolean  @default(true)
+  maxDiscount   Int?
+  minOrderValue Int?
+  createdAt     DateTime @default(now())
+}
+
+model WebhookEvent {
+  id             String        @id @default(uuid())
+  orderId        String?
+  provider       PaymentProvider
+  eventType      String
+  payload        String
+  verified       Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  order          Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+model AdminActivityLog {
+  id          String   @id @default(uuid())
+  actorId     String
+  action      String
+  targetType  String
+  targetId    String
+  createdAt   DateTime @default(now())
+  actor       User     @relation("AdminActor", fields: [actorId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  MANAGER
+  ADMIN
+}
+
+enum CardType {
+  VIRTUAL
+  PHYSICAL
+}
+
+enum CardStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+}
+
+enum ProductStatus {
+  DRAFT
+  APPROVED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum DeliveryStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+enum OtpPurpose {
+  SIGNUP
+  LOGIN
+  EMAIL_VERIFY
+  SMS_VERIFY
+  CHECKOUT
+  PASSWORD_RESET
+}
+
+enum PaymentProvider {
+  RAZORPAY
+  CASHFREE
+  PLACEHOLDER
+}
+
+enum DeliveryMethod {
+  VIRTUAL
+  PHYSICAL
+}
+
+enum CouponType {
+  PERCENTAGE
+  FLAT
+}

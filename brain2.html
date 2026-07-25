@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cardsocean</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="CardsOcean is a premium fintech marketplace for custom-value RuPay prepaid gift cards. Zero KYC, instant digital reveal, and tactile physical gifting.">
+    <meta name="keywords" content="fintech, prepaid cards, gift cards, RuPay, custom amount, no KYC, digital assets">
+
+    <!-- Google Fonts: Space Grotesk & Space Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS CDN (Optional / Styling via Vanilla CSS matching Dala tokens) -->
+    <style>
+        @font-face {
+            font-family: 'Quincy';
+            src: local('Quincy'), local('Quincy CF'), local('QuincyCF'), local('Quincy Regular'), local('Quincy-Regular'), local('Quincy CF Regular'), url('https://fonts.gstatic.com/s/playfairdisplay/v37/nuFvD-vYSZ27mxTvnYxXo8U6-GPqBcFIu10r.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* ── Dala Style Tokens ──────────────────────────────────────── */
+        :root {
+            --color-void: #000000;
+            --color-bone: #ffffff;
+            --color-ash: #e2e8f0;
+            /* Brighter bone-gray for body text readability */
+            --color-smoke: #a1a1aa;
+            /* Brighter muted text */
+            --color-plum-voltage: #a855f7;
+            /* Brighter electric violet */
+            --color-amber-spark: #fbbf24;
+            /* Brighter neon gold */
+            --color-lichen: #00f5d4;
+            /* Brighter neon teal */
+            --color-rose-glow: #ff007f;
+            /* Brighter hot pink */
+            --color-indigo-depth: #3b82f6;
+            /* Brighter electric indigo/blue */
+
+            --font-display: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #030012;
+            /* Deep space dark backdrop */
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(67, 56, 202, 0.08) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: driftBackground 24s ease infinite;
+            color: var(--color-bone);
+            font-family: var(--font-display);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes driftBackground {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        /* Selection Color */
+        ::selection {
+            background: rgba(128, 82, 255, 0.3);
+            color: var(--color-bone);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-void);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-plum-voltage);
+        }
+
+        /* ── Background WebGL Canvas ───────────────────────────────── */
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ── Navigation Header ──────────────────────────────────────── */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo-container {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--color-bone);
+        }
+
+        .logo-mark {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: none;
+            font-family: 'Quincy', 'Quincy CF', 'Playfair Display', serif;
+        }
+
+        .logo-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--color-plum-voltage);
+            stroke-width: 2px;
+            fill: none;
+            transition: transform 0.4s ease;
+        }
+
+        .logo-container:hover .logo-icon {
+            transform: rotate(45deg);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        .nav-link {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--color-smoke);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-bone);
+        }
+
+        /* Primary Action Pill Button */
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-plum-voltage);
+            color: var(--color-bone);
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #6e3dfc;
+            transform: translateY(-1px);
+        }
+
+        .cta-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ── Content Layout ────────────────────────────────────────── */
+        main {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Typography Classes matching Dala reference */
+        .eyebrow-kicker {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-plum-voltage);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .eyebrow-kicker.amber {
+            color: var(--color-amber-spark);
+        }
+
+        .display-headline {
+            font-size: clamp(3.2rem, 7.5vw, 6.2rem);
+            font-weight: 300;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            color: var(--color-bone);
+            margin-bottom: 32px;
+            text-wrap: balance;
+        }
+
+        .body-paragraph {
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: var(--color-ash);
+            max-width: 480px;
+            margin-bottom: 36px;
+        }
+
+        /* Hairline borders on void canvas */
+        .hairline-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 60px 0;
+        }
+
+        /* Cards showcase grid details */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .interactive-item {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-align: left;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            color: var(--color-bone);
+            display: flex;
+            justify-content: justify-content;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .interactive-item:hover,
+        .interactive-item.active {
+            border-color: var(--color-plum-voltage);
+            background-color: rgba(128, 82, 255, 0.03);
+        }
+
+        .interactive-item.active {
+            border-width: 1.5px;
+        }
+
+        .interactive-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .interactive-item p {
+            font-size: 12px;
+            color: var(--color-smoke);
+        }
+
+        .interactive-item .bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-smoke);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .interactive-item:hover .bullet,
+        .interactive-item.active .bullet {
+            background-color: var(--color-plum-voltage);
+            transform: scale(1.2);
+        }
+
+        /* 3-Step Checkout Journey details */
+        .checkout-flow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .flow-step {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px 28px;
+            transition: border-color 0.4s ease;
+        }
+
+        .flow-step:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .step-num {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-amber-spark);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .flow-step h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .flow-step p {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--color-ash);
+        }
+
+        /* Interactive control elements */
+        .action-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: var(--color-amber-spark);
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            border: 1px solid var(--color-amber-spark);
+            border-radius: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 184, 41, 0.08);
+        }
+
+        /* Custom layout tweaks to let WebGL show clearly */
+        .right-empty {
+            pointer-events: none;
+        }
+
+        /* Mobile Adaptations */
+        @media (max-width: 991px) {
+            header {
+                padding: 20px;
+            }
+
+            nav {
+                display: none;
+                /* simple mobile fallback, header action button is preserved */
+            }
+
+            .split-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .right-empty {
+                display: none;
+            }
+
+            #webgl-canvas {
+                opacity: 0.35;
+                /* blend into mobile backgrounds more heavily */
+            }
+
+            .checkout-flow {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background WebGL 3D Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Nav Header -->
+    <header>
+        <a href="#" class="logo-container">
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <polygon points="12 2, 22 8.5, 22 15.5, 12 22, 2 15.5, 2 8.5" />
+                <polyline points="12 2, 12 22" />
+                <line x1="2" y1="8.5" x2="22" y2="15.5" />
+                <line x1="2" y1="15.5" x2="22" y2="8.5" />
+            </svg>
+            <span class="logo-mark">CardsOcean</span>
+        </a>
+
+        <nav>
+            <a href="#hero" class="nav-link active">Ocean</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#collection" class="nav-link">Collection</a>
+            <a href="#journey" class="nav-link">Journey</a>
+            <a href="#checkout" class="cta-btn">Get Card</a>
+        </nav>
+    </header>
+
+    <!-- Scroll content container -->
+    <main>
+
+        <!-- SECTION 1: HERO -->
+        <section id="hero" class="split-layout">
+            <div>
+                <span class="eyebrow-kicker">REIMAGINING PREPAID GIFTING.</span>
+                <h1 class="display-headline">Custom value.<br>Zero KYC<br>friction.</h1>
+                <p class="body-paragraph">
+                    CardsOcean is a premium, high-trust fintech marketplace built for custom RuPay gift cards. Adjust
+                    your
+                    balances to the exact rupee and send instantly, bypassing standard KYC hurdles.
+                </p>
+                <div class="action-group">
+                    <a href="#collection" class="cta-btn">Shop Cards</a>
+                    <a href="#journey" class="btn-secondary">Explore Flow</a>
+                </div>
+            </div>
+            <div class="right-empty"></div>
+        </section>
+
+        <!-- SECTION 2: PROVISIONS / FEATURES -->
+        <section id="features" class="split-layout">
+            <div>
+                <span class="eyebrow-kicker">💎 WHAT WE PROVIDE</span>
+                <h2 class="display-headline" style="font-size: clamp(2.5rem, 6.2vw, 5.2rem);">Prepaid rails<br>without
+                    limitations.</h2>
+                <p class="body-paragraph">
+                    Traditional prepaid cards restrict you to pre-defined tiers and endless verification gates.
+                    CardsOcean
+                    resolves these limits instantly on the trusted national RuPay network.
+                </p>
+
+                <div class="card-list">
+                    <div class="interactive-item" style="cursor: default;">
+                        <div class="bullet" style="background-color: var(--color-amber-spark);"></div>
+                        <div>
+                            <h4>Custom Denominations</h4>
+                            <p>Set values down to the single rupee within ₹1,000 to ₹10,000.</p>
+                        </div>
+                    </div>
+                    <div class="interactive-item" style="cursor: default;">
+                        <div class="bullet" style="background-color: var(--color-rose-glow);"></div>
+                        <div>
+                            <h4>Zero-KYC Purchase Flow</h4>
+                            <p>Simple verification via dual OTPs (mobile + email) and automated PAN check.</p>
+                        </div>
+                    </div>
+                    <div class="interactive-item" style="cursor: default;">
+                        <div class="bullet" style="background-color: var(--color-plum-voltage);"></div>
+                        <div>
+                            <h4>Secure Digital Reveal</h4>
+                            <p>Decrypted balance storage and rate-limited API access keep credentials safe.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-empty"></div>
+        </section>
+
+        <!-- SECTION 3: THE COLLECTION -->
+        <section id="collection" class="split-layout">
+            <div>
+                <span class="eyebrow-kicker">🎴 THE COLLECTION</span>
+                <h2 class="display-headline" style="font-size: clamp(2.5rem, 6.2vw, 5.2rem);">Styled for<br>authority.
+                </h2>
+                <p class="body-paragraph">
+                    Select from our curated array of digital and physical card layouts, designed for premium presenting.
+                    Interactive particle preview highlights the selection.
+                </p>
+
+                <div class="card-list" id="collection-selector">
+                    <button class="interactive-item active" data-card-idx="0" data-card-theme="aurora">
+                        <div class="bullet"></div>
+                        <div>
+                            <h4>Aurora Signature Card (Virtual)</h4>
+                            <p>Premium digital gradient layout · Limit range: ₹1,000 – ₹10,000</p>
+                        </div>
+                    </button>
+
+                    <button class="interactive-item" data-card-idx="1" data-card-theme="ember">
+                        <div class="bullet"></div>
+                        <div>
+                            <h4>Ember Physical Card (Physical)</h4>
+                            <p>Tactile presentation box packaging · Limit range: ₹1,500 – ₹10,000</p>
+                        </div>
+                    </button>
+
+                    <button class="interactive-item" data-card-idx="2" data-card-theme="noir">
+                        <div class="bullet"></div>
+                        <div>
+                            <h4>Noir Premium Card (Physical)</h4>
+                            <p>Dark, minimal, low-profile card · Limit range: ₹1,000 – ₹8,000</p>
+                        </div>
+                    </button>
+
+                    <button class="interactive-item" data-card-idx="3" data-card-theme="verve">
+                        <div class="bullet"></div>
+                        <div>
+                            <h4>Verve Instant Card (Virtual)</h4>
+                            <p>Lightweight utility built for rapid delivery · Limit range: ₹1,000 – ₹6,000</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="right-empty"></div>
+        </section>
+
+        <!-- SECTION 4: THE JOURNEY -->
+        <section id="journey">
+            <div>
+                <span class="eyebrow-kicker amber">🗺️ THE SCROLLING FLOW</span>
+                <h2 class="display-headline" style="max-width: 800px; font-size: clamp(2.5rem, 6.2vw, 5.2rem);">
+                    Frictionless
+                    from design to reveal.</h2>
+
+                <div class="checkout-flow">
+                    <div class="flow-step">
+                        <span class="step-num">STEP 01</span>
+                        <h3>Review & Setup</h3>
+                        <p>Customize quantities, specify custom values, and select delivery preference (Instant Virtual
+                            or Tactile
+                            Physical).</p>
+                    </div>
+
+                    <div class="flow-step">
+                        <span class="step-num">STEP 02</span>
+                        <h3>Dual-OTP Verify</h3>
+                        <p>Secure identity on the fly with concurrent mobile and email OTP checks combined with rapid
+                            API-based PAN
+                            verification.</p>
+                    </div>
+
+                    <div class="flow-step">
+                        <span class="step-num">STEP 03</span>
+                        <h3>Provision & Use</h3>
+                        <p>Cards are instantly minted after webhook confirmations. Decrypt, copy, and spend directly
+                            from your
+                            secure client dashboard.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── CDNs ─────────────────────────────────────────────────── -->
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Three.js Postprocessing (UnrealBloom) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+    <!-- ── Custom 3D & Scrolling Script ─────────────────────────── -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ── Setup Three.js Scene ────────────────────────────────────
+        const canvas = document.getElementById('webgl-canvas');
+        const scene = new THREE.Scene();
+
+        // Camera
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        // Move camera back a bit to accommodate the scaled brain size
+        camera.position.set(0, 2, 12);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true,
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+
+        // ── Postprocessing (UnrealBloom) ───────────────────────────
+        const composer = new THREE.EffectComposer(renderer);
+        const renderPass = new THREE.RenderPass(scene, camera);
+        composer.addPass(renderPass);
+
+        // Params: resolution, strength, radius, threshold
+        const bloomPass = new THREE.UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            1.55, // Strength of bloom
+            0.85, // Radius of bloom
+            0.15  // Threshold
+        );
+        composer.addPass(bloomPass);
+
+        // ── Setup Particles ─────────────────────────────────────────
+        const particleCount = 300000; // Ultra high density
+
+        const geometry = new THREE.BufferGeometry();
+        const posCard = new Float32Array(particleCount * 3);
+        const posBrain = new Float32Array(particleCount * 3);
+        const posShield = new Float32Array(particleCount * 3);
+        const posVortex = new Float32Array(particleCount * 3);
+
+        const colCard = new Float32Array(particleCount * 3);
+        const colBrain = new Float32Array(particleCount * 3);
+        const colShield = new Float32Array(particleCount * 3);
+        const colVortex = new Float32Array(particleCount * 3);
+
+        const aRandom = new Float32Array(particleCount);
+
+        // Colors Helpers
+        const cViolet = new THREE.Color('#a855f7');
+        const cGold = new THREE.Color('#fbbf24');
+        const cLichen = new THREE.Color('#00f5d4');  // Bright Neon Cyan/Teal
+        const cPlum = new THREE.Color('#d946ef');
+        const cIndigo = new THREE.Color('#3b82f6');
+        const cRose = new THREE.Color('#ff007f');
+        const cWhite = new THREE.Color('#ffffff');
+        const PARTICLE_SPREAD = 1.1; // increased spacing for more separation
+        const BRAIN_SCALE = 0.55; // Scale brain to 50% of original size
+
+        // ── Procedural Anatomical Brain Generator ────────────────────
+        // Builds a real brain silhouette (two cerebral hemispheres with a
+        // longitudinal fissure, temporal lobes, frontal/occipital tapering,
+        // gyri/sulci wrinkle detail, plus a cerebellum + brainstem) purely
+        // from math, so no external mesh/asset file is required.
+        const BRAIN_X = 4.6;  // half-width  (left / right)
+        const BRAIN_Y = 3.35; // half-height (top / bottom)
+        const BRAIN_Z = 5.4;  // half-length (front / back)
+
+        function brainCortexPoint() {
+            const cosPhi = Math.random() * 2 - 1;
+            const phi = Math.acos(cosPhi);
+            const theta = Math.random() * Math.PI * 2;
+            const sinPhi = Math.sin(phi);
+            const dx = sinPhi * Math.cos(theta);
+            const dy = cosPhi;
+            const dz = sinPhi * Math.sin(theta);
+
+            let bx = dx * BRAIN_X;
+            let by = dy * BRAIN_Y;
+            let bz = dz * BRAIN_Z;
+
+            const topWeight = Math.max(0, dy);
+            const nearMid = Math.exp(-(dx * dx) / (2 * 0.10 * 0.10));
+            const fissure = 0.42 * topWeight * nearMid;
+            bx += Math.sign(dx || 1) * fissure * BRAIN_X;
+            by -= fissure * BRAIN_Y * 0.55;
+
+            const temporal = Math.exp(-Math.pow(dy + 0.32, 2) / (2 * 0.22 * 0.22)) *
+                Math.exp(-Math.pow(Math.abs(dx) - 0.62, 2) / (2 * 0.22 * 0.22)) *
+                Math.exp(-Math.pow(dz - 0.05, 2) / (2 * 0.45 * 0.45));
+            bx += Math.sign(dx || 1) * temporal * BRAIN_X * 0.55;
+            by -= temporal * BRAIN_Y * 0.28;
+
+            if (dz > 0) bz *= 1 + 0.10 * dz;
+            else bz *= 1 + 0.16 * dz;
+
+            const fold =
+                0.05 * Math.sin(theta * 9 + phi * 13) +
+                0.035 * Math.sin(theta * 17 - phi * 7 + 1.3) +
+                0.026 * Math.sin(theta * 29 + phi * 23 + 2.7) +
+                0.018 * Math.sin(theta * 43 - phi * 31 + 4.1);
+            const foldScale = (BRAIN_X + BRAIN_Y + BRAIN_Z) / 3;
+            bx += dx * fold * foldScale;
+            by += dy * fold * foldScale;
+            bz += dz * fold * foldScale;
+
+            const shell = 0.86 + 0.14 * Math.sqrt(Math.random());
+            bx *= shell; by *= shell; bz *= shell;
+
+            return [bx, by, bz, fold];
+        }
+
+        function brainCerebellumPoint() {
+            const cosPhi = Math.random() * 2 - 1;
+            const phi = Math.acos(cosPhi);
+            const theta = Math.random() * Math.PI * 2;
+            const sinPhi = Math.sin(phi);
+            const dx = sinPhi * Math.cos(theta);
+            const dy = cosPhi;
+            const dz = sinPhi * Math.sin(theta);
+
+            const crX = BRAIN_X * 0.5, crY = BRAIN_Y * 0.34, crZ = BRAIN_Z * 0.26;
+            const cx0 = 0, cy0 = -BRAIN_Y * 0.62, cz0 = -BRAIN_Z * 0.72;
+
+            const folia = 0.10 * Math.sin(theta * 55 + 0.6) * Math.max(0, -dy + 0.3);
+            const shell = 0.88 + 0.12 * Math.sqrt(Math.random());
+
+            const bx = cx0 + (dx * crX) * (1 + folia) * shell;
+            const by = cy0 + (dy * crY) * shell;
+            const bz = cz0 + (dz * crZ) * (1 + folia) * shell;
+            return [bx, by, bz, folia];
+        }
+
+        function brainStemPoint() {
+            const t = Math.random();
+            const angle = Math.random() * Math.PI * 2;
+            const r = (0.55 + 0.45 * Math.random()) * BRAIN_X * 0.14;
+            const bx = Math.cos(angle) * r;
+            const bz = -BRAIN_Z * 0.6 + Math.sin(angle) * r * 0.6;
+            const by = -BRAIN_Y * 0.68 - t * BRAIN_Y * 0.62;
+            return [bx, by, bz, 0];
+        }
+
+        const BRAIN_CORTEX_LIMIT = Math.floor(particleCount * 0.80);
+        const BRAIN_CEREBELLUM_LIMIT = Math.floor(particleCount * 0.94);
+
+        // Precalculate Card, Fallback Brain, Shield, Vortex Shapes
+        const cardLimit1 = Math.floor(particleCount * 0.20);
+        const cardLimit2 = Math.floor(particleCount * 0.75);
+        const shieldLimit = Math.floor(particleCount * 0.30);
+
+        for (let i = 0; i < particleCount; i++) {
+            aRandom[i] = Math.random();
+            const i3 = i * 3;
+
+            // 1. CARD SHAPE
+            let cx = 0, cy = 0, cz = 0;
+            let cc = new THREE.Color();
+            if (i < cardLimit1) {
+                const side = Math.floor(Math.random() * 4);
+                if (side === 0) { cx = (Math.random() - 0.5) * 7; cy = 2.2; }
+                else if (side === 1) { cx = (Math.random() - 0.5) * 7; cy = -2.2; }
+                else if (side === 2) { cx = 3.5; cy = (Math.random() - 0.5) * 4.4; }
+                else { cx = -3.5; cy = (Math.random() - 0.5) * 4.4; }
+                cz = (Math.random() - 0.5) * 0.05;
+                cc.copy(cGold).lerp(cWhite, Math.random() * 0.15);
+            } else if (i < cardLimit2) {
+                cx = (Math.random() - 0.5) * 7;
+                cy = (Math.random() - 0.5) * 4.4;
+                cz = (Math.random() - 0.5) * 0.08;
+                cc.copy(cViolet).lerp(cGold, (cx + 3.5) / 7);
+            } else {
+                cx = -2.0 + (Math.random() - 0.5) * 0.8;
+                cy = 0.6 + (Math.random() - 0.5) * 0.8;
+                cz = 0.02 + Math.random() * 0.05;
+                cc.copy(cWhite).lerp(cGold, 0.4);
+            }
+            posCard[i3] = cx * PARTICLE_SPREAD;
+            posCard[i3 + 1] = cy * PARTICLE_SPREAD;
+            posCard[i3 + 2] = cz * PARTICLE_SPREAD;
+            colCard[i3] = cc.r; colCard[i3 + 1] = cc.g; colCard[i3 + 2] = cc.b;
+
+            // 2. BRAIN SHAPE (fully procedural anatomical geometry — hemispheres,
+            // longitudinal fissure, temporal lobes, cerebellum + brainstem, gyri/sulci)
+            let bp, brc;
+            if (i < BRAIN_CORTEX_LIMIT) {
+                bp = brainCortexPoint();
+                // shade folds: sulci (negative fold) read darker/deeper, gyri (positive) brighter
+                const shade = 0.72 + 0.34 * (bp[3] * 4 + 0.5);
+                brc = new THREE.Color().copy(cLichen).multiplyScalar(Math.min(1.15, Math.max(0.55, shade)));
+            } else if (i < BRAIN_CEREBELLUM_LIMIT) {
+                bp = brainCerebellumPoint();
+                brc = new THREE.Color().copy(cLichen).lerp(cWhite, 0.2 + 0.15 * Math.random());
+            } else {
+                bp = brainStemPoint();
+                brc = new THREE.Color().copy(cLichen).lerp(cIndigo, 0.35);
+            }
+            posBrain[i3] = bp[0] * BRAIN_SCALE;
+            posBrain[i3 + 1] = bp[1] * BRAIN_SCALE;
+            posBrain[i3 + 2] = bp[2] * BRAIN_SCALE;
+            colBrain[i3] = brc.r; colBrain[i3 + 1] = brc.g; colBrain[i3 + 2] = brc.b;
+
+            // 3. SHIELD SHAPE
+            let shx = 0, shy = 0, shz = 0;
+            const shc = new THREE.Color().copy(cIndigo).lerp(cWhite, Math.random() * 0.35);
+            if (Math.random() > 0.8) shc.copy(cRose);
+
+            const sw = 2.6;
+            const shHeight = 3.5;
+            if (i < shieldLimit) {
+                const outlineType = Math.floor(Math.random() * 3);
+                if (outlineType === 0) { shx = (Math.random() - 0.5) * 2 * sw; shy = shHeight + 0.4 * (1 - Math.pow(shx / sw, 2)); }
+                else if (outlineType === 1) { shx = (Math.random() > 0.5 ? 1 : -1) * sw; shy = Math.random() * shHeight; }
+                else { shy = -Math.random() * shHeight; shx = (Math.random() > 0.5 ? 1 : -1) * sw * (1 - Math.pow(-shy / shHeight, 2)); }
+                shz = -1.2 * Math.cos((shx / sw) * Math.PI / 2) + (Math.random() - 0.5) * 0.05;
+            } else {
+                shx = (Math.random() - 0.5) * 2 * sw;
+                const yMax = shHeight + 0.4 * (1 - Math.pow(shx / sw, 2));
+                const yMin = -shHeight * Math.sqrt(Math.max(0, 1 - Math.abs(shx) / sw));
+                shy = yMin + Math.random() * (yMax - yMin);
+                shz = -1.2 * Math.cos((shx / sw) * Math.PI / 2) + (Math.random() - 0.5) * 0.15;
+            }
+            posShield[i3] = shx * PARTICLE_SPREAD;
+            posShield[i3 + 1] = shy * PARTICLE_SPREAD;
+            posShield[i3 + 2] = shz * PARTICLE_SPREAD;
+            colShield[i3] = shc.r; colShield[i3 + 1] = shc.g; colShield[i3 + 2] = shc.b;
+
+            // 4. VORTEX SHAPE
+            const vy = (Math.random() - 0.5) * 11;
+            const vRadius = 1.0 + 0.12 * Math.pow(vy + 5.5, 2) / 2;
+            const vTheta = vy * 1.2 + (i / particleCount) * Math.PI * 8;
+            const vx = vRadius * Math.cos(vTheta);
+            const vz = vRadius * Math.sin(vTheta);
+            const vcol = new THREE.Color().copy(cRose).lerp(cGold, (vy + 5.5) / 11);
+            if (Math.random() > 0.7) vcol.copy(cPlum);
+
+            posVortex[i3] = vx * PARTICLE_SPREAD;
+            posVortex[i3 + 1] = vy * PARTICLE_SPREAD;
+            posVortex[i3 + 2] = vz * PARTICLE_SPREAD;
+            colVortex[i3] = vcol.r; colVortex[i3 + 1] = vcol.g; colVortex[i3 + 2] = vcol.b;
+        }
+
+        geometry.setAttribute('aRandom', new THREE.BufferAttribute(aRandom, 1));
+        geometry.setAttribute('aPositionCard', new THREE.BufferAttribute(posCard, 3));
+        geometry.setAttribute('aPositionBrain', new THREE.BufferAttribute(posBrain, 3));
+        geometry.setAttribute('aPositionShield', new THREE.BufferAttribute(posShield, 3));
+        geometry.setAttribute('aPositionVortex', new THREE.BufferAttribute(posVortex, 3));
+
+        geometry.setAttribute('aColorCard', new THREE.BufferAttribute(colCard, 3));
+        geometry.setAttribute('aColorBrain', new THREE.BufferAttribute(colBrain, 3));
+        geometry.setAttribute('aColorShield', new THREE.BufferAttribute(colShield, 3));
+        geometry.setAttribute('aColorVortex', new THREE.BufferAttribute(colVortex, 3));
+
+        // Initially position at card positions
+        geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(posCard), 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colCard), 3));
+
+        // Custom Particle Texture
+        const createCircleTexture = () => {
+            const matCanvas = document.createElement('canvas');
+            matCanvas.width = 16; matCanvas.height = 16;
+            const ctx = matCanvas.getContext('2d');
+            const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, 16, 16);
+            return new THREE.CanvasTexture(matCanvas);
+        };
+
+        // ── GPU-based Custom GLSL Shaders ───────────────────────────
+        const vertexShader = `
+      uniform float uTime;
+      uniform float uTransition1;
+      uniform float uTransition2;
+      uniform float uTransition3;
+      uniform float uMouseForce;
+      uniform vec3 uMousePos;
+      uniform float uBaseSize;
+
+      attribute float aRandom;
+      attribute vec3 aPositionCard;
+      attribute vec3 aPositionBrain;
+      attribute vec3 aPositionShield;
+      attribute vec3 aPositionVortex;
+
+      attribute vec3 aColorCard;
+      attribute vec3 aColorBrain;
+      attribute vec3 aColorShield;
+      attribute vec3 aColorVortex;
+
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+      vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+      float snoise(vec3 v) { 
+        const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+        vec3 i  = floor(v + dot(v, C.yyy));
+        vec3 x0 = v - i + dot(i, C.xxx);
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1.0 - g;
+        vec3 i1 = min(g.xyz, l.zxy);
+        vec3 i2 = max(g.xyz, l.zxy);
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy;
+        vec3 x3 = x0 - D.yyy;
+        i = mod289(i); 
+        vec4 p = permute(permute(permute(
+                   i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                 + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                 + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+        float n_ = 0.142857142857;
+        vec3 ns = n_ * D.wyz - D.xzx;
+        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+        vec4 x_ = floor(j * ns.z);
+        vec4 y_ = floor(j - 7.0 * x_);
+        vec4 x = x_ *ns.x + ns.yyyy;
+        vec4 y = y_ *ns.x + ns.yyyy;
+        vec4 h = 1.0 - abs(x) - abs(y);
+        vec4 b0 = vec4(x.xy, y.xy);
+        vec4 b1 = vec4(x.zw, y.zw);
+        vec4 s0 = floor(b0)*2.0 + 1.0;
+        vec4 s1 = floor(b1)*2.0 + 1.0;
+        vec4 sh = -step(h, vec4(0.0));
+        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+        vec3 p0 = vec3(a0.xy, h.x);
+        vec3 p1 = vec3(a0.zw, h.y);
+        vec3 p2 = vec3(a1.xy, h.z);
+        vec3 p3 = vec3(a1.zw, h.w);
+        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+        p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+        m = m * m;
+        return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+      }
+
+      void main() {
+        // Interpolate position on GPU
+        vec3 pos = mix(aPositionCard, aPositionBrain, uTransition1);
+        pos = mix(pos, aPositionShield, uTransition2);
+        pos = mix(pos, aPositionVortex, uTransition3);
+
+        // Interpolate color on GPU
+        vec3 col = mix(aColorCard, aColorBrain, uTransition1);
+        col = mix(col, aColorShield, uTransition2);
+        col = mix(col, aColorVortex, uTransition3);
+
+        // Shimmering Simplex Noise
+        float noiseScale = 0.7;
+        float noiseFreq = 0.55;
+        vec3 noisePos = pos * noiseScale + vec3(0.0, uTime * noiseFreq, 0.0);
+        float noiseVal = snoise(noisePos);
+
+        pos.x += noiseVal * 0.035 * aRandom;
+        pos.y += noiseVal * 0.035 * (1.0 - aRandom);
+        pos.z += noiseVal * 0.03;
+
+        // Pulse breathing effect
+        float pulse = sin(uTime * 1.5 + aRandom * 6.28) * 0.02;
+        pos *= (1.0 + pulse);
+
+        // Mouse Repulsion
+        float dist = distance(pos, uMousePos);
+        if (dist < 1.6) {
+          vec3 dir = normalize(pos - uMousePos);
+          float force = (1.6 - dist) * 0.35 * uMouseForce;
+          pos += dir * force;
+        }
+
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+
+        // Custom Sizing based on depth
+        float sizeVar = 0.8 + 0.6 * aRandom;
+        gl_PointSize = uBaseSize * sizeVar * (300.0 / -mvPosition.z);
+
+        vColor = col;
+        vAlpha = 0.75 + 0.25 * sin(uTime * 3.0 + aRandom * 12.0);
+      }
+    `;
+
+        const fragmentShader = `
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      void main() {
+        vec2 center = gl_PointCoord - vec2(0.5);
+        float dist = length(center);
+        float alpha = smoothstep(0.5, 0.15, dist) * vAlpha;
+        if (alpha < 0.01) discard;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+        // ── Material ────────────────────────────────────────────────
+        const material = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uTransition1: { value: 0 },
+                uTransition2: { value: 0 },
+                uTransition3: { value: 0 },
+                uMouseForce: { value: 0 },
+                uMousePos: { value: new THREE.Vector3(-999, -999, -999) },
+                uBaseSize: { value: 0.045 }
+            },
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        // Center the particle system horizontally for proper framing
+        particleSystem.position.x = 0;
+        scene.add(particleSystem);
+
+        // Adjust particle center based on screen width
+        const adjustSystemPosition = () => {
+            if (window.innerWidth < 992) {
+                particleSystem.position.x = 0;
+                // More upward offset for mobile to reveal brain top fully
+                particleSystem.position.y = 0.8;
+                material.uniforms.uBaseSize.value = 0.038;
+            } else {
+                particleSystem.position.x = 2.4;
+                // Raise the system more to fully show the top of the brain
+                particleSystem.position.y = 1.0;
+                material.uniforms.uBaseSize.value = 0.055;
+            }
+        };
+        adjustSystemPosition();
+        window.addEventListener('resize', adjustSystemPosition);
+
+        // Resize handling
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            bloomPass.resolution.set(window.innerWidth, window.innerHeight);
+        });
+
+        // ── Mouse & Interaction Setup ───────────────────────────────
+        let mouseX = 0, mouseY = 0;
+        let targetRotationX = 0, targetRotationY = 0;
+        const raycaster = new THREE.Raycaster();
+        const mouse2D = new THREE.Vector2(-999, -999);
+        let mouseForce = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+
+            targetRotationY = mouseX * 0.35;
+            targetRotationX = -mouseY * 0.35;
+
+            mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            gsap.to(material.uniforms.uMouseForce, { value: 1.0, duration: 0.5, overwrite: "auto" });
+        });
+
+        let mouseTimeout;
+        window.addEventListener('mousemove', () => {
+            clearTimeout(mouseTimeout);
+            mouseTimeout = setTimeout(() => {
+                gsap.to(material.uniforms.uMouseForce, { value: 0.0, duration: 0.8 });
+            }, 800);
+        });
+
+        // Touch support for mobile
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                mouseX = (e.touches[0].clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+                targetRotationY = mouseX * 0.45;
+                targetRotationX = -mouseY * 0.45;
+
+                mouse2D.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                mouse2D.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+                material.uniforms.uMouseForce.value = 1.0;
+            }
+        });
+
+        // ── Scrollytelling State Map ────────────────────────────────
+        // Link GSAP to uniforms instead of CPU state!
+        gsap.to(material.uniforms.uTransition1, {
+            value: 1.0,
+            ease: 'power2.inOut',
+            scrollTrigger: {
+                trigger: '#features',
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true
+            }
+        });
+
+        gsap.to(material.uniforms.uTransition2, {
+            value: 1.0,
+            ease: 'power2.inOut',
+            scrollTrigger: {
+                trigger: '#collection',
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true
+            }
+        });
+
+        gsap.to(material.uniforms.uTransition3, {
+            value: 1.0,
+            ease: 'power2.inOut',
+            scrollTrigger: {
+                trigger: '#journey',
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true
+            }
+        });
+
+        // Navigation Active Sync
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let currentSectionId = 'hero';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 300;
+                if (window.scrollY >= top) currentSectionId = sec.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) link.classList.add('active');
+            });
+        });
+
+        // ── Interactive Collection Selection ────────────────────────
+        const items = document.querySelectorAll('#collection-selector .interactive-item');
+        const themes = {
+            aurora: { r: cViolet.r, g: cViolet.g, b: cViolet.b },
+            ember: { r: cGold.r, g: cGold.g, b: cGold.b },
+            noir: { r: cIndigo.r, g: cIndigo.g, b: cIndigo.b },
+            verve: { r: cRose.r, g: cRose.g, b: cRose.b }
+        };
+
+        let baseSpeed = 1.0;
+
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                items.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                const themeKey = item.getAttribute('data-card-theme');
+                const color = themes[themeKey];
+
+                // Flare speed
+                baseSpeed = 6.0;
+                gsap.to({ val: 6.0 }, {
+                    val: 1.0,
+                    duration: 1.5,
+                    ease: 'power2.out',
+                    onUpdate: function () { baseSpeed = this.targets()[0].val; }
+                });
+            });
+        });
+
+        // ── Loop update frame ───────────────────────────────────────
+        const clock = new THREE.Clock();
+
+        const tick = () => {
+            const time = clock.getElapsedTime();
+            const delta = clock.getDelta();
+
+            // Project mouse coordinates to project space for uMousePos
+            if (renderer) {
+                const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+                raycaster.setFromCamera(mouse2D, camera);
+                const mouse3D = new THREE.Vector3();
+                raycaster.ray.intersectPlane(plane, mouse3D);
+
+                // Smooth mouse position follow
+                const localMouse = mouse3D.clone().sub(particleSystem.position);
+                material.uniforms.uMousePos.value.lerp(localMouse, 0.1);
+            }
+
+            // Update Time
+            material.uniforms.uTime.value = time;
+
+            // Slow orbital rotation
+            const rotationSpeed = delta * 0.12 * baseSpeed;
+            particleSystem.rotation.y += rotationSpeed;
+
+            // Smooth interpolation for mouse movements
+            particleSystem.rotation.y += (targetRotationY - particleSystem.rotation.y) * 0.05;
+            particleSystem.rotation.x += (targetRotationX - particleSystem.rotation.x) * 0.05;
+
+            // Render via composer to apply bloom
+            composer.render();
+            requestAnimationFrame(tick);
+        };
+
+        tick();
+
+    </script>
+</body>
+
+</html>

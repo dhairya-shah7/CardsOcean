@@ -1,0 +1,19 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build --workspace apps/web",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "http://localhost:5000",
+    "NEXT_PUBLIC_GIFT_CARD_DEDUCTION_RATE": "@next_public_gift_card_deduction_rate"
+  },
+  "experimentalServices": {
+    "elitepay-api": {
+      "type": "web",
+      "root": "apps/api",
+      "entrypoint": "src/app.ts",
+      "routePrefix": "/",
+      "buildCommand": "npm install && npm run prisma:generate && npm run build"
+    }
+  }
+}
